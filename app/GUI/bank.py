@@ -16,7 +16,9 @@ class BankAccountUI:
         # balance display
         self.account_balance = tk.IntVar()
         self.account_balance.set(self.account.get_balance())
-        self.balance_entry = tk.Entry(bank_acc, textvariable=self.account_balance)
+        self.balance_entry = tk.Entry(
+            bank_acc, textvariable=self.account_balance
+        )
         self.balance_entry.pack(side="top")
 
         # deposit
@@ -63,15 +65,18 @@ class BankAccountUI:
 
         bank_acc.mainloop()
 
+    def update(self):
+        self.display_account_status()
+
     def deposit(self):
         self.account.deposit(int(self.deposit_entry.get()))
         self.account_balance.set(self.account.get_balance())
-        self.display_account_status()
+        self.update()
 
     def withdraw(self):
         self.account.withdraw(int(self.withdraw_entry.get()))
         self.account_balance.set(self.account.get_balance())
-        self.display_account_status()
+        self.update()
 
     def display_account_status(self):
         if self.account.is_overdrawn():
