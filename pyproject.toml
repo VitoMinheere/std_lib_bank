@@ -13,4 +13,7 @@ skip_empty = true
 ignore_errors = true
 
 [tool.black]
-line-length = 88
+line-length = 80
+
+[tool.pylint.master]
+fail-under = 8
