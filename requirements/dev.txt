@@ -3,4 +3,5 @@ flake8
 black
 mypy
 pylint
-coverage
+coverage[toml]
+isort

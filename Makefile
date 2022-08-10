@@ -16,5 +16,6 @@ test: ## Run tests and display coverage overview
 
 lint: ## Run black, flake8 and mypy on code and tests
 	black -l 80 ${APP} ${TEST}
+	isort  ${APP} ${TEST}
 	flake8 ${APP} ${TEST}
 	pylint --fail-under=8 ${APP} ${TEST}
