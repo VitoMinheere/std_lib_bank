@@ -1,0 +1,6 @@
+-r prod.txt
+flake8
+black
+mypy
+pylint
+coverage
