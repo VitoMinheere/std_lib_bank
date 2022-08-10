@@ -1,6 +1,7 @@
 """Module that cointains all bank and transaction related classes"""
 from __future__ import annotations
-from typing import TypeVar, Optional
+
+from typing import TypeVar
 
 from .transaction import Transaction
 
@@ -40,10 +41,7 @@ class Account:
 
     def get_balance(self: A) -> int:
         """
-
-        Returns:
-
-
+        Return balance of an account
         """
         return self.balance
 
@@ -51,6 +49,7 @@ class Account:
         self: A, transaction_type: Transaction.TransactionType, amount: int
     ) -> Transaction:
         """
+        Creates a Transactionobject and adds it to the trasnactions
 
         Args:
             transaction_type (Transaction.TransactionType):
@@ -59,14 +58,14 @@ class Account:
         """
         trx = Transaction(transaction_type, amount, self.get_balance())
         self.transactions.append(trx)
-        print(len(self.transactions))
         return trx
 
     def deposit(self: A, amount: int) -> None:
         """
+        Add funds to a bank account
 
         Args:
-            amount (int):
+            amount (int): amount of funds to add
 
         """
         self.check_positive(amount)
@@ -75,22 +74,23 @@ class Account:
             Transaction.TransactionTypes.DEPOSIT, amount
         )
 
-    def withdraw(self: A, amount: int) -> Optional[Transaction]:
+    def withdraw(self: A, amount: int) -> Transaction:
         """
+        Retrieve money from account
 
         Args:
-            amount (int):
+            amount (int): Amount of money to retrieve
 
+        Raises:
+            ValueError: If funds are not enough to cover the amount
         """
-        trx = None
         self.check_positive(amount)
         if (self.balance - amount) < 0:
-            print("Insufficient balance")
-        else:
-            self.balance -= amount
-            trx = self.add_transaction_to_history(
-                Transaction.TransactionTypes.WITHDRAWAL, amount
-            )
+            raise ValueError("Insufficient balance")
+        self.balance -= amount
+        trx = self.add_transaction_to_history(
+            Transaction.TransactionTypes.WITHDRAWAL, amount
+        )
         return trx
 
 
@@ -115,20 +115,26 @@ class BankAccount(Account):
         """
         return self.balance < 0
 
-    def withdraw(self: B, amount: int) -> Optional[Transaction]:
+    def withdraw(self: B, amount: int) -> Transaction:
         """
+        Retrieve money from bank account.
+        Balance can go into negavtive if allow_overdraft is true
 
         Args:
             amount (int):
 
+        Returns:
+            Transaction
+
+        Raises:
+            ValueError: If not enough balance and allow_overdraft is false
+
         """
-        trx = None
         self.check_positive(amount)
         if (self.balance - amount) < 0 and not self.allow_overdraft:
-            print("Insufficient balance")
-        else:
-            self.balance -= amount
-            trx = self.add_transaction_to_history(
-                Transaction.TransactionTypes.WITHDRAWAL, amount
-            )
+            raise ValueError("Insufficient balance")
+        self.balance -= amount
+        trx = self.add_transaction_to_history(
+            Transaction.TransactionTypes.WITHDRAWAL, amount
+        )
         return trx

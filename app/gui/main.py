@@ -2,8 +2,8 @@
 import tkinter as tk
 from typing import TypeVar
 
-from .bank import BankAccountUI
 from ..classes.bank import BankAccount
+from .bank import BankAccountUI
 
 S = TypeVar("S", bound="Screen")
 

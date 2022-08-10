@@ -1,8 +1,8 @@
 """Module to handle Transaction"""
 from __future__ import annotations
-from typing import TypeVar, Dict
 
 from enum import Enum
+from typing import Dict, TypeVar
 
 T = TypeVar("T", bound="Transaction")
 
@@ -29,10 +29,6 @@ class Transaction:
         self.trx_type = trx_type
         self.amount = amount
         self.account_value = account_value
-
-    def execute(self: T) -> None:
-        """ """
-        pass
 
     def serialize(self: T) -> Dict:
         """

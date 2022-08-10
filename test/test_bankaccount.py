@@ -1,3 +1,4 @@
+"""Tests for Account and sub classes"""
 import unittest
 
 from app.classes.bank import Account, BankAccount
@@ -21,16 +22,26 @@ class TestAccount(unittest.TestCase):
     def test_withdraw_funds_overdraft(self):
         account = Account()
         account.deposit(100)
-        account.withdraw(110)
+        with self.assertRaises(ValueError):
+            account.withdraw(110)
         self.assertNotEqual(account.balance, -10)
 
     def test_add_transaction_to_history(self):
         account = Account()
         account.deposit(1000)
         self.assertGreater(len(account.transactions), 0)
+        account.withdraw(10)
+        self.assertGreater(len(account.transactions), 1)
 
 
 class TestBankAccount(unittest.TestCase):
+    def test_is_overdrawn(self):
+        bank_account = BankAccount(allow_overdraft=True)
+        bank_account.deposit(10)
+        self.assertFalse(bank_account.is_overdrawn())
+        bank_account.withdraw(20)
+        self.assertTrue(bank_account.is_overdrawn())
+
     def test_withdraw_funds(self):
         bank_account = BankAccount()
         bank_account.deposit(100)
@@ -40,7 +51,8 @@ class TestBankAccount(unittest.TestCase):
     def test_withdraw_funds_overdraft(self):
         bank_account = BankAccount()
         bank_account.deposit(100)
-        bank_account.withdraw(110)
+        with self.assertRaises(ValueError):
+            bank_account.withdraw(110)
         self.assertNotEqual(bank_account.balance, -10)
 
     def test_withdraw_funds_allow_overdraft(self):
