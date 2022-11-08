@@ -57,7 +57,7 @@ class BankAccountUI:
     def create_root(self: BUI) -> None:
         """ """
         root = tk.Tk()
-        root.geometry("600x300")
+        root.geometry("900x600")
         root.title("Transfer Money")
         root.configure(bg="orange")
         self.root = root
@@ -138,12 +138,14 @@ class BankAccountUI:
 
     def update(self: BUI) -> None:
         """ """
-        self.account_balance.set(self.account.get_balance())
+        # self.account_balance.set(self.account.get_balance())
         self.display_account_status()
 
     def deposit(self: BUI) -> None:
         """ """
-        self.account.deposit(int(self.deposit_entry.get()))
+        trx = self.account.deposit(int(self.deposit_entry.get()))
+        if trx:
+            self.trx_list.add_to_list(trx)
         self.update()
 
     def withdraw(self: BUI) -> None:
@@ -169,6 +171,8 @@ class TransactionHistory:
     def __init__(self: TH, frame: tk.Tk) -> None:
         self.frame = frame
         self.trx_tree = ttk.Treeview(self.frame)
+        style = ttk.Style()
+        style.configure("Treeview", rowheight=40)
 
     def create_transaction_list(self: TH) -> None:
         """
@@ -188,10 +192,10 @@ class TransactionHistory:
         self.trx_tree.heading("Amount", text="Amount", anchor="w")
         self.trx_tree.heading("Balance", text="Balance", anchor="w")
 
-        self.trx_tree.insert(
-            parent="", index="end", values=["Deposit", "12", "12"]
-        )
-        self.trx_tree.pack(pady=0)
+        # self.trx_tree.insert(
+        #     parent="", index="end", values=["Deposit", "12", "12"]
+        # )
+        self.trx_tree.pack(pady=2)
 
     def add_to_list(self: TH, trx: Transaction) -> None:
         """

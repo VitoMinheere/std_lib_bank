@@ -70,7 +70,7 @@ class Account:
         """
         self.check_positive(amount)
         self.balance += amount
-        self.add_transaction_to_history(
+        return self.add_transaction_to_history(
             Transaction.TransactionTypes.DEPOSIT, amount
         )
 
@@ -88,10 +88,9 @@ class Account:
         if (self.balance - amount) < 0:
             raise ValueError("Insufficient balance")
         self.balance -= amount
-        trx = self.add_transaction_to_history(
+        return self.add_transaction_to_history(
             Transaction.TransactionTypes.WITHDRAWAL, amount
         )
-        return trx
 
 
 class BankAccount(Account):
